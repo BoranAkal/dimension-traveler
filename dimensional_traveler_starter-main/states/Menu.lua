@@ -1,0 +1,60 @@
+Menu = {}
+
+function Menu:enter()
+    self.selection = 1
+    self.options = {'Start', 'High Scores', 'Quit'}
+    self.highScore = HighScore.getHighestScore()
+end
+
+function Menu:update(dt)
+    -- optional animation / pulsing menu effect goes here
+end
+
+function Menu:keypressed(key)
+    if key == 'up' or key == 'w' then
+        self.selection = math.max(1, self.selection - 1)
+    elseif key == 'down' or key == 's' then
+        self.selection = math.min(#self.options, self.selection + 1)
+    elseif key == 'return' or key == 'enter' then
+        if self.selection == 1 then
+            goToState(Play)
+        elseif self.selection == 2 then
+            goToState(HighScore)
+        elseif self.selection == 3 then
+            love.event.quit()
+        end
+    end
+end
+
+function Menu:draw()
+    love.graphics.clear(0.05, 0.05, 0.1)
+
+    -- title
+    love.graphics.setFont(gFonts.large)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.printf('The Dimensional Traveler', 0, 20, VIRTUAL_WIDTH, 'center')
+
+    -- high score
+    love.graphics.setFont(gFonts.small)
+    love.graphics.setColor(1, 0.85, 0.2)
+    love.graphics.printf("Best Score: " .. self.highScore, 0, 55, VIRTUAL_WIDTH, 'center')
+
+    -- reset color
+    love.graphics.setColor(1, 1, 1)
+
+    -- options
+    love.graphics.setFont(gFonts.medium)
+    for i, option in ipairs(self.options) do
+        local y = 90 + (i - 1) * 20
+
+        if i == self.selection then
+            love.graphics.setColor(0.8, 0.9, 0.4)
+        else
+            love.graphics.setColor(1, 1, 1)
+        end
+
+        love.graphics.printf(option, 0, y, VIRTUAL_WIDTH, 'center')
+    end
+
+    love.graphics.setColor(1, 1, 1)
+end
