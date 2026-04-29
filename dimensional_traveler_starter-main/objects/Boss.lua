@@ -52,7 +52,7 @@ function Boss:checkPhase()
 end
 
 function Boss:movePattern(dt, player)
-    -- consistent patrol movement
+    -- patrol movement
     self.x = self.x + self.speed * dt
 
     if self.x <= 300 then
